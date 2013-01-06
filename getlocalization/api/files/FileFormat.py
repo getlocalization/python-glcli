@@ -17,7 +17,7 @@ FORMATS = [['.po', 'gettext'],
           ]
 
 def autodetect_fileformat(filename):
-    fileName, fileExt = os.path.splitext(filename)
+    fileName, fileExt = os.path.splitext(os.path.basename(filename))
     
     if fileName == 'strings' and fileExt == '.xml':
         return 'android'

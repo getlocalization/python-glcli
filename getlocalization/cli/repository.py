@@ -4,11 +4,13 @@ class Repository(object):
     def __init__(self):
         self.config = ConfigParser.ConfigParser()
         self.config.read(['.gl/repository'])
+        
     
     def create_repository(self, projectName):
         self.config.add_section('config')
         self.config.set('config', 'project', projectName)
         self.config.add_section('master_files')
+        self.config.add_section('locale_map')
         os.makedirs('.gl')
         self.commit()
      
@@ -21,6 +23,16 @@ class Repository(object):
         self.config.set("master_files", local_file, str(mtime))
         self.commit()
  
+    def add_locale_map(self, master_file, languageCode, localFile):
+        self.config.set("locale_map", master_file + "/" + languageCode, localFile)
+        self.commit()
+    
+    def get_locale_map(self, master_file, languageCode):
+        try:
+            return self.config.get("locale_map", master_file + "/" + languageCode)
+        except ConfigParser.NoOptionError:
+            return None
+    
     def commit(self):
         with open('.gl/repository', 'wb') as configfile:
             self.config.write(configfile)

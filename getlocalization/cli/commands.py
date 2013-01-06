@@ -5,6 +5,7 @@ from getlocalization.cli.repository import Repository
 from getlocalization.api.files.GLMasterFile import GLMasterFile
 from getlocalization.api.files.FileFormat import autodetect_fileformat
 from getlocalization.api.GLProject import GLProject
+from getlocalization.api.files.GLTranslations import GLTranslations
 
 d = Dispatcher()
 
@@ -18,16 +19,38 @@ def init(projectName):
 def add(file, language='en'):
     '''Add new master file to project. It will be tracked and pushed when there's changes.'''
     Repository().add_master(file)
+    
+    print "File %s added successfully."
     pass
     
 @d.command(shortlist=True)
-def map_locale(masterFile, language, targetFile):
+def map_locale(masterFile, languageCode, targetFile):
     '''Map translation of a given master file to local file. When file is pulled from server, it's saved to given target file.'''
-    pass
-
+    Repository().add_locale_map(masterFile, languageCode, targetFile)
+    print "Mapped translation of %s for %s to be saved as %s" % (masterFile, languageCode, targetFile)
+     
 @d.command(shortlist=True)
 def pull():
     '''Pull available translations from server'''
+    
+    repo = Repository();
+    
+    username, password = prompt_userpw()
+    
+    translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
+    trlist = translations.list()
+                             
+    for tr in trlist:
+        local_file = repo.get_locale_map(tr.get('master_file'), tr.get('iana_code'))
+        if local_file is None:
+            print "Warning: Skipping file %s (%s). Map local file first e.g. with command: gl map-locale %s %s %s. You can also force download files \
+to their default locations with parameter --force" % (tr.get('master_file'), tr.get('iana_code'), tr.get('master_file'), tr.get('iana_code'), tr.get('filename'))
+            continue
+        
+        translations.save_translation_file(tr.get('master_file'), tr.get('iana_code'), local_file)
+        
+        print "Translation file %s updated" % local_file
+    
     pass
 
 @d.command(shortlist=True)
@@ -41,7 +64,6 @@ def push():
     if len(files) == 0:
         print "No changes found\n"
         return
-    
     
     username, password = prompt_userpw()
     

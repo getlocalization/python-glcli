@@ -28,7 +28,9 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 """
 
-from getlocalization.api.data import CreateMasterFileQuery, ListMasterFilesQuery, TranslationsQuery, UpdateMasterFileQuery
+from getlocalization.api.data.TranslationsQuery import TranslationsQuery
+from getlocalization.api.data.ListTranslationsQuery import ListTranslationsQuery
+from getlocalization.api.data.TranslationFileQuery import TranslationFileQuery
 from getlocalization.api.client.QueryException import QueryException
 from getlocalization.api.client.QuerySecurityException import QuerySecurityException
 from getlocalization.api.GLException import GLException
@@ -91,7 +93,37 @@ class GLTranslations(object):
             else:
                 raise GLException("Error when processing the query: " + str(e))
         except Exception as e:
-            e.printStackTrace()
+            raise GLException("Unable to download translations: " + str(e))
+
+    def list(self):
+        query = ListTranslationsQuery(self.myProject.getProjectName())
+        query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
+       
+        try:
+            query.doQuery()
+            
+            return query.getList()
+            
+        except QueryException as e:
+            if e.getStatusCode() == 401:
+                raise GLException("Authentication error, please check your username and password" + str(e))
+            else:
+                raise GLException("Error when processing the query: " + str(e))
+        except Exception as e:
+            raise GLException("Unable to download translations: " + str(e))
+
+    def save_translation_file(self, masterFile, languageCode, targetFile):
+        query = TranslationFileQuery(self.myProject.getProjectName(), masterFile, languageCode, targetFile)
+        query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
+       
+        try:
+            query.doQuery()
+        except QueryException as e:
+            if e.getStatusCode() == 401:
+                raise GLException("Authentication error, please check your username and password" + str(e))
+            else:
+                raise GLException("Error when processing the query: " + str(e))
+        except Exception as e:
             raise GLException("Unable to download translations: " + str(e))
 
     def unzip(self, zip, target):
