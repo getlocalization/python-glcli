@@ -20,9 +20,9 @@ def add(file, language='en'):
     '''Add new master file to project. It will be tracked and pushed when there's changes.'''
     repo = Repository()
     if repo.add_master(file):
-        print "File %s added successfully." % repo.relative_path(file)
+        print "File %s added successfully." % repo.relative_path(repo.file_path(file))
     else:
-        print "Couldn't find a file %s" % repo.relative_path(file)
+        print "Couldn't find a file %s" % repo.relative_path(repo.file_path(file))
         
     pass
     
@@ -79,7 +79,7 @@ def push():
             return
         
         print repo.file_path(file)
-        mf = GLMasterFile(GLProject(repo.get_project_name(), username, password), repo.file_path(file), file, platformId)
+        mf = GLMasterFile(GLProject(repo.get_project_name(), username, password), repo.relative_to_root(file), file, platformId)
         mf.push()
         
         repo.touch_master(file)

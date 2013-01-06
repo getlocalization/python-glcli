@@ -9,6 +9,9 @@ class Repository(object):
         
         if self.root is None:
             print "No repository found"
+            
+            self.root = os.getcwd() + '/'
+            
             return
             
         self.config.read([self.root + '.gl/repository'])
@@ -22,7 +25,6 @@ class Repository(object):
         while True:
             tmp = p
             p = os.path.abspath(os.path.join(p, os.pardir))
-            print p
             
             if os.path.isdir(p + '/.gl'):
                 return p + '/'
@@ -30,13 +32,23 @@ class Repository(object):
             if tmp == p:
                 break
     
+   
     def file_path(self, file):
+        """
+        Get file path for those files that are given from command-line
+        """
         return os.path.join(self.root, os.getcwd() + '/' + file)
         
     def relative_path(self, file):
-        return os.path.relpath(self.file_path(file), self.root)
+        """
+        Return relative path. 
+        """
+        return os.path.relpath(file, self.root)
     
     def relative_to_root(self, file):
+        """
+        Get file path for those files that are already processed
+        """
         return self.root + "/" + file
     
     def create_repository(self, projectName):
@@ -51,17 +63,17 @@ class Repository(object):
     def add_master(self, local_file):
         if not os.path.exists(self.file_path(local_file)):
             return False
-        self.config.set("master_files", self.relative_path(local_file), str(0))
+        self.config.set("master_files", self.relative_path(self.file_path(local_file)), str(0))
         self.commit()
         return True
  
     def touch_master(self, local_file):
-        mtime = os.path.getmtime(self.file_path(local_file))
-        self.config.set("master_files", self.relative_path(local_file), str(mtime))
+        mtime = os.path.getmtime(self.relative_to_root(local_file))
+        self.config.set("master_files", self.relative_path(self.relative_to_root(local_file)), str(mtime))
         self.commit()
  
     def add_locale_map(self, master_file, languageCode, localFile):
-        self.config.set("locale_map", self.relative_path(master_file) + "/" + languageCode, self.relative_path(localFile))
+        self.config.set("locale_map", self.relative_path(self.file_path(master_file)) + "/" + languageCode, self.relative_path(localFile))
         self.commit()
     
     def get_locale_map(self, master_file, languageCode):
@@ -82,7 +94,7 @@ class Repository(object):
         items = self.config.items('master_files')
         
         for item in items:
-            mtime = os.path.getmtime(self.file_path(item[0]))
+            mtime = os.path.getmtime(self.relative_to_root(item[0]))
             
             if float(mtime) > float(item[1]):
                 print "#\t Modified: %s" % item[0]
