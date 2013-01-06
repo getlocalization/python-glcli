@@ -57,6 +57,7 @@ class Query(object):
         
         self.set_basicauth(request)
         
+        print "Opening file...: %s" % file_
         # build form
         fhandle = open(file_)
         form = MultiPartForm()  

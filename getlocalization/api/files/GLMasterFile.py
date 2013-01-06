@@ -28,7 +28,10 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 """
 
-from getlocalization.api.data import CreateMasterFileQuery, ListMasterFilesQuery, TranslationsQuery, UpdateMasterFileQuery
+from getlocalization.api.data.ListMasterFilesQuery import ListMasterFilesQuery
+from getlocalization.api.data.CreateMasterFileQuery import CreateMasterFileQuery
+from getlocalization.api.data.UpdateMasterFileQuery import UpdateMasterFileQuery
+
 from getlocalization.api.client.QueryException import QueryException
 from getlocalization.api.client.QuerySecurityException import QuerySecurityException
 from getlocalization.api.GLException import GLException
@@ -45,6 +48,7 @@ class GLMasterFile(object):
         self.myProject = project
         self.platformId = platformId
         self.name = pathname
+        self.createdToServer = False
 
     # 
     # 	 * Returns whether file already exists on server. This will make
@@ -60,21 +64,22 @@ class GLMasterFile(object):
         
         query = ListMasterFilesQuery(self.myProject.getProjectName())
         query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
+        
         try:
             query.doQuery()
             
             master_files = query.getMasterFiles()
             
-            createdToServer = self.name in master_files
+            self.createdToServer = self.name in master_files
             
-            return createdToServer
+            return self.createdToServer
         except QueryException as e:
             if e.getStatusCode() == 401:
-                raise GLException("Authentication error, please check your username and password" + e.getMessage())
+                raise GLException("Authentication error, please check your username and password" + str(e))
             else:
                 raise GLException("Error when processing the query: " + e.getMessage())
         except Exception as e:
-            raise GLException("Unable to get information whether master file is available or not: " + e.getMessage())
+            raise GLException("Unable to get information whether master file is available or not: " + str(e))
 
     # 
     # 	 * Pushes (adds or updates) master file to Get Localization. 
@@ -89,19 +94,21 @@ class GLMasterFile(object):
 
     def update(self):
         """ generated source for method update """
-        query = UpdateMasterFileQuery(self, self.myProject.getProjectName())
+        query = UpdateMasterFileQuery(self.getName(), self.myProject.getProjectName())
         query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
         try:
             query.doQuery()
         except Exception as e:
-            raise GLException("Unable to update master file to Get Localization: " + e.getMessage())
+            raise GLException("Unable to update master file to Get Localization: " + str(e))
 
     def add(self):
         """ generated source for method add """
-        query = CreateMasterFileQuery(self, self.myProject.getProjectName(), self.platformId, self.myProject.getLanguageId())
+        query = CreateMasterFileQuery(self.getName(), self.myProject.getProjectName(), self.platformId, self.myProject.getLanguageId())
         query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
         try:
             query.doQuery()
         except Exception as e:
-            raise GLException("Unable to create master file to Get Localization: " + e.getMessage())
+            raise GLException("Unable to create master file to Get Localization: " + str(e))
 
+    def getName(self):
+        return self.name
