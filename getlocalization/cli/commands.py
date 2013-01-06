@@ -18,9 +18,12 @@ def init(projectName):
 @d.command(shortlist=True)
 def add(file, language='en'):
     '''Add new master file to project. It will be tracked and pushed when there's changes.'''
-    Repository().add_master(file)
-    
-    print "File %s added successfully."
+    repo = Repository()
+    if repo.add_master(file):
+        print "File %s added successfully." % repo.relative_path(file)
+    else:
+        print "Couldn't find a file %s" % repo.relative_path(file)
+        
     pass
     
 @d.command(shortlist=True)
@@ -47,7 +50,7 @@ def pull():
 to their default locations with parameter --force" % (tr.get('master_file'), tr.get('iana_code'), tr.get('master_file'), tr.get('iana_code'), tr.get('filename'))
             continue
         
-        translations.save_translation_file(tr.get('master_file'), tr.get('iana_code'), local_file)
+        translations.save_translation_file(tr.get('master_file'), tr.get('iana_code'), repo.relative_to_root(local_file))
         
         print "Translation file %s updated" % local_file
     
@@ -68,19 +71,19 @@ def push():
     username, password = prompt_userpw()
     
     for file in files:
-        platformId = autodetect_fileformat(file)
+        print file
+        platformId = autodetect_fileformat(repo.file_path(file))
         
         if platformId is None:
             print "Couldn't detect file format for file %s, please define it manually" % file
             return
         
-        mf = GLMasterFile(GLProject(repo.get_project_name(), username, password), file, platformId)
+        print repo.file_path(file)
+        mf = GLMasterFile(GLProject(repo.get_project_name(), username, password), repo.file_path(file), file, platformId)
         mf.push()
         
         repo.touch_master(file)
     
-    pass
-
 @d.command(shortlist=True)
 def status():
     '''Project status'''
@@ -94,11 +97,11 @@ def status():
 
 def prompt_userpw():
     print "Get Localization Login"
-    username = raw_input('Username:')
-    password = getpass.getpass()
+    username = raw_input('Username (https://www.getlocalization.com):')
+    password = getpass.getpass('Password (https://www.getlocalization.com):')
     
     return username, password
 
 def main():
-    print "Get Localization CLI (C) 2010-2013 Synble Ltd. All rights reserved.\n"
+    #print "Get Localization CLI (C) 2010-2013 Synble Ltd. All rights reserved.\n"
     d.dispatch()

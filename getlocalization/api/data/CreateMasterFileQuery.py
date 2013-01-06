@@ -12,17 +12,18 @@ class CreateMasterFileQuery(Query):
     # 	 * @param languageId Standard IANA language code.
     # 	 * 
     # 	 
-    def __init__(self, file_, projectId, platformId, languageId):
+    def __init__(self, file_, pathname, projectId, platformId, languageId):
         super(CreateMasterFileQuery, self).__init__()
         self.file_ = file_
         self.projectId = projectId
         self.platformId = platformId
         self.languageId = languageId
+        self.pathname = pathname
 
     def doQuery(self):
         try:
             url = "https://www.getlocalization.com/" + self.projectId + "/api/create-master/" + self.platformId + "/" + self.languageId;
-            self.postFile(self.file_, url)
+            self.postFile(self.file_, self.pathname, url)
         except QuerySecurityException as cse:
             #  Making sure that URL starts with https.
             cse.printStackTrace()

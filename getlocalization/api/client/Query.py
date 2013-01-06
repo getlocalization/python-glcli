@@ -48,7 +48,7 @@ class Query(object):
         self.password = password
 
   
-    def postFile(self, file_, url):
+    def postFile(self, file_, pathname, url):
         """ generated source for method postFile """
         if self.forcedSSL and not url.startswith("https"):
             raise QuerySecurityException("SSL is required with basic auth")
@@ -57,13 +57,15 @@ class Query(object):
         
         self.set_basicauth(request)
         
-        print "Opening file...: %s" % file_
         # build form
         fhandle = open(file_)
         form = MultiPartForm()  
-              
-        form.addFile('file', file_, fhandle)
-        form.addField('name', file_)
+    
+        print "File: " + file_
+        print "Pathname:" + pathname
+        
+        form.addFile('file', pathname, fhandle)
+        form.addField('name', pathname)
 
         request.add_header("Content-Type", form.getContentType());
         request.add_data(str(form))
@@ -78,7 +80,9 @@ class Query(object):
             return handle.getcode()
         
         except urllib2.HTTPError, e:
-            return handle.getcode()
+            import traceback
+            print traceback.format_exc()
+            return -1
 
         except Exception, e:
             return -1

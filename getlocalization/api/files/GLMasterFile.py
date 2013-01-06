@@ -37,6 +37,8 @@ from getlocalization.api.client.QuerySecurityException import QuerySecurityExcep
 from getlocalization.api.GLException import GLException
 from getlocalization.api.GLProject import GLProject
 
+import traceback
+
 class GLMasterFile(object):
     """ generated source for class GLMasterFile """
     # 
@@ -44,10 +46,11 @@ class GLMasterFile(object):
     # 	 * 
     # 	 * @param pathname Path to master file
     # 	 
-    def __init__(self, project, pathname, platformId):
+    def __init__(self, project, realpath, pathname, platformId):
         self.myProject = project
         self.platformId = platformId
         self.name = pathname
+        self.realpath = realpath
         self.createdToServer = False
 
     # 
@@ -94,7 +97,7 @@ class GLMasterFile(object):
 
     def update(self):
         """ generated source for method update """
-        query = UpdateMasterFileQuery(self.getName(), self.myProject.getProjectName())
+        query = UpdateMasterFileQuery(self.realpath, self.getName(), self.myProject.getProjectName())
         query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
         try:
             query.doQuery()
@@ -103,11 +106,12 @@ class GLMasterFile(object):
 
     def add(self):
         """ generated source for method add """
-        query = CreateMasterFileQuery(self.getName(), self.myProject.getProjectName(), self.platformId, self.myProject.getLanguageId())
+        query = CreateMasterFileQuery(self.realpath, self.getName(), self.myProject.getProjectName(), self.platformId, self.myProject.getLanguageId())
         query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
         try:
             query.doQuery()
         except Exception as e:
+            print traceback.format_exc()
             raise GLException("Unable to create master file to Get Localization: " + str(e))
 
     def getName(self):

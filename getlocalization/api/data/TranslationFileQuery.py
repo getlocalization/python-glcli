@@ -36,12 +36,12 @@ import tempfile, os
 class TranslationFileQuery(Query):
     """ generated source for class TranslationsQuery """
     # 
-    # 	 * Update an existing master file to given Get Localization project. 
-    # 	 * 
-    # 	 * @param file File that is sent to Get Localization
-    # 	 * @param projectId The project name that appears in your Get Localization URL.
-    # 	 * 
-    # 	 
+    #      * Update an existing master file to given Get Localization project. 
+    #      * 
+    #      * @param file File that is sent to Get Localization
+    #      * @param projectId The project name that appears in your Get Localization URL.
+    #      * 
+    #      
     def __init__(self, projectId, masterFile, languageCode, targetFile):
         """ generated source for method __init__ """
         super(TranslationFileQuery, self).__init__()

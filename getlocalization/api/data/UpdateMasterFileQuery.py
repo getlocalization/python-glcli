@@ -40,17 +40,18 @@ class UpdateMasterFileQuery(Query):
     # 	 * @param projectId The project name that appears in your Get Localization URL.
     # 	 * 
     # 	 
-    def __init__(self, file_, projectId):
+    def __init__(self, file_, pathname, projectId):
         """ generated source for method __init__ """
         super(UpdateMasterFileQuery, self).__init__()
         self.file_ = file_
         self.projectId = projectId
+        self.pathname = pathname
        
     def doQuery(self):
         """ generated source for method doQuery """
         try:
             url = "https://www.getlocalization.com/" + self.projectId + "/api/update-master";
-            self.postFile(self.file_, url)
+            self.postFile(self.file_, self.pathname, url)
         except QuerySecurityException as cse:
             #  Making sure that URL starts with https.
             #cse.printStackTrace()
