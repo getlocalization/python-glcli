@@ -1,6 +1,10 @@
 import ConfigParser, os
 import os.path
-
+try:
+    import simplejson
+except:
+    import json as simplejson
+   
 class Repository(object):
     def __init__(self):
         self.config = ConfigParser.ConfigParser()
@@ -57,6 +61,8 @@ class Repository(object):
         
         self.config.add_section('master_files')
         self.config.add_section('locale_map')
+        self.config.add_section('status')
+        
         os.makedirs('.gl')
         self.commit()
      
@@ -97,11 +103,20 @@ class Repository(object):
             mtime = os.path.getmtime(self.relative_to_root(item[0]))
             
             if float(mtime) > float(item[1]):
-                print "#\t Modified: %s" % item[0]
                 files.append(item[0])
         
         return files
     
+    def save_status(self, status):
+        self.config.set('status', 'data', simplejson.dumps(status))
+        self.commit()
+        pass
+    
+    def get_status(self):
+        try:
+            return simplejson.loads(self.config.get('status', 'data'))
+        except ConfigParser.NoOptionError:
+            return None
     
     
     

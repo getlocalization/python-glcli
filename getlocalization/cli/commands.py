@@ -1,4 +1,5 @@
 import getpass
+import math, os
 
 from getlocalization.cli.opster import command, Dispatcher
 from getlocalization.cli.repository import Repository
@@ -42,19 +43,24 @@ def pull():
     
     translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
     trlist = translations.list()
-                             
+    repo.save_status(trlist)
+           
+    print "#"
+                      
     for tr in trlist:
         local_file = repo.get_locale_map(tr.get('master_file'), tr.get('iana_code'))
         if local_file is None:
-            print "Warning: Skipping file %s (%s). Map local file first e.g. with command: gl map-locale %s %s %s. You can also force download files \
+            print "# Warning: Skipping file %s (%s). Map local file first\n# e.g. with command: gl map-locale %s %s %s.\n# You can also force download files \
 to their default locations with parameter --force" % (tr.get('master_file'), tr.get('iana_code'), tr.get('master_file'), tr.get('iana_code'), tr.get('filename'))
+            print "#"
             continue
         
         translations.save_translation_file(tr.get('master_file'), tr.get('iana_code'), repo.relative_to_root(local_file))
         
-        print "Translation file %s updated" % local_file
+        print "# Translation file %s updated" % local_file
+        print "#"
     
-    pass
+    exit(0)
 
 @d.command(shortlist=True)
 def push():
@@ -65,34 +71,75 @@ def push():
     files = repo.get_changed_files()
     
     if len(files) == 0:
-        print "No changes found\n"
-        return
+        print "#"
+        print "# Nothing to push"
+        print "#"
+        exit(1)
+    else:
+        print "#\n# Changes not pushed:\n#"
+        for file in files:
+            print "#\tmodified: %s" % file
+        print "#\n"
     
     username, password = prompt_userpw()
     
     for file in files:
-        print file
         platformId = autodetect_fileformat(repo.file_path(file))
         
         if platformId is None:
-            print "Couldn't detect file format for file %s, please define it manually" % file
+            print "# Couldn't detect file format for file %s, please define it manually" % file
             return
         
-        print repo.file_path(file)
         mf = GLMasterFile(GLProject(repo.get_project_name(), username, password), repo.relative_to_root(file), file, platformId)
         mf.push()
         
         repo.touch_master(file)
     
+    print "# Done"
+    exit(0)
+    
 @d.command(shortlist=True)
 def status():
     '''Project status'''
+    repo = Repository()
     
-    print autodetect_fileformat('test.properties')
-    print autodetect_fileformat('test.strings')
-    print autodetect_fileformat('strings.xml')
-    print autodetect_fileformat('jorma.po')
+    trlist = repo.get_status()
     
+    exit_code = 0
+    
+    if trlist is not None:
+        not_mapped = []
+        
+        print "# Mapped files:\n#"
+        for tr in trlist:
+            local_file = repo.get_locale_map(tr.get('master_file'), tr.get('iana_code'))
+            
+            progress =  str(int(round(float(tr.get('progress'))))) + "%"
+            
+            if local_file is None:
+                not_mapped.append(tr)
+            else:
+                print "#\t%s [%s] => %s %s" % (tr.get('master_file'), tr.get('iana_code'), local_file, progress)
+        
+        print "#\n# Files not mapped:\n#"
+        for tr in not_mapped:
+            print "#\t%s [%s] %s" % (tr.get('master_file'), tr.get('iana_code'), progress)
+    else:
+        print "#"
+        print "# Nothing to report. Pull first to get a proper status."
+        print "#"
+        exit_code = 1
+        
+    files = repo.get_changed_files()
+    
+    if len(files) > 0:
+        print "#\n# Changes:\n#"
+        for file in files:
+            print "# \tmodified: %s" % file
+            
+    print "#"
+    
+    exit(exit_code)
     pass
 
 def prompt_userpw():
