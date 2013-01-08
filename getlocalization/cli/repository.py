@@ -16,7 +16,7 @@ class Repository(object):
             
             self.root = os.getcwd() + '/'
             
-            return
+            exit(2)
             
         self.config.read([self.root + '.gl/repository'])
     
