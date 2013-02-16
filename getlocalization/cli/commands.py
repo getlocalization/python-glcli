@@ -8,6 +8,11 @@ from getlocalization.api.files.FileFormat import autodetect_fileformat
 from getlocalization.api.GLProject import GLProject
 from getlocalization.api.files.GLTranslations import GLTranslations
 
+try:
+    import simplejson
+except:
+    import json as simplejson
+   
 d = Dispatcher()
 
 @d.command(shortlist=True)
@@ -32,7 +37,25 @@ def map_locale(masterFile, languageCode, targetFile):
     '''Map translation of a given master file to local file. When file is pulled from server, it's saved to given target file.'''
     Repository().add_locale_map(masterFile, languageCode, targetFile)
     print "Mapped translation of %s for %s to be saved as %s" % (masterFile, languageCode, targetFile)
-     
+
+@d.command(shortlist=True)
+def translations(output=('o', 'human', "Output format e.g. json")):
+    '''List translations from given project'''
+    repo = Repository();
+    
+    username, password = prompt_userpw()
+    
+    translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
+    
+    trlist = translations.list()
+    
+    if output == 'json':
+        print simplejson.dumps(trlist)
+    else:
+        for tr in trlist:
+            progress =  str(int(round(float(tr.get('progress'))))) + "%"
+            print "#\t%s [%s] %s" % (tr.get('master_file'), tr.get('iana_code'), progress)
+   
 @d.command(shortlist=True)
 def pull():
     '''Pull available translations from server'''
