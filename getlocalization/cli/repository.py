@@ -8,7 +8,7 @@ except:
 class Repository(object):
     def __init__(self):
         self.config = ConfigParser.ConfigParser()
-        
+        self.config.optionxform = str
         self.root = self.find_repository()
         
         if self.root is None:
@@ -23,6 +23,7 @@ class Repository(object):
     @staticmethod
     def create_repository(projectName):
         config = ConfigParser.ConfigParser()
+        config.optionxform = str
         config.add_section('config')
         config.set('config', 'project', projectName)
         
