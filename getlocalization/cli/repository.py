@@ -80,6 +80,10 @@ class Repository(object):
     def add_master(self, local_file):
         if not os.path.exists(self.file_path(local_file)):
             return False
+        
+        if self.config.get("master_files", self.relative_path(self.file_path(local_file))) is not None:
+            return True
+        
         self.config.set("master_files", self.relative_path(self.file_path(local_file)), str(0))
         self.commit()
         return True
