@@ -13,7 +13,7 @@ d = Dispatcher()
 @d.command(shortlist=True)
 def init(projectName):
     '''Create a local repository to working directory and link it to existing Get Localization project.'''
-    Repository().create_repository(projectName)
+    Repository.create_repository(projectName)
     print "Repository created..."
     
 @d.command(shortlist=True)

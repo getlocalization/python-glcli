@@ -20,6 +20,23 @@ class Repository(object):
             
         self.config.read([self.root + '.gl/repository'])
     
+    @staticmethod
+    def create_repository(projectName):
+        config = ConfigParser.ConfigParser()
+        config.add_section('config')
+        config.set('config', 'project', projectName)
+        
+        config.add_section('master_files')
+        config.add_section('locale_map')
+        config.add_section('status')
+        
+        os.makedirs('.gl')
+        
+        root = os.getcwd() + '/'
+        
+        with open(root + '.gl/repository', 'wb') as configfile:
+            config.write(configfile)
+    
     def find_repository(self):
         p = os.getcwd()
         
@@ -55,17 +72,6 @@ class Repository(object):
         """
         return self.root + "/" + file
     
-    def create_repository(self, projectName):
-        self.config.add_section('config')
-        self.config.set('config', 'project', projectName)
-        
-        self.config.add_section('master_files')
-        self.config.add_section('locale_map')
-        self.config.add_section('status')
-        
-        os.makedirs('.gl')
-        self.commit()
-     
     def add_master(self, local_file):
         if not os.path.exists(self.file_path(local_file)):
             return False
