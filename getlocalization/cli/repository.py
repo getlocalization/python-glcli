@@ -81,8 +81,11 @@ class Repository(object):
         if not os.path.exists(self.file_path(local_file)):
             return False
         
-        if self.config.get("master_files", self.relative_path(self.file_path(local_file))) is not None:
-            return True
+        try:
+            if self.config.get("master_files", self.relative_path(self.file_path(local_file))) is not None:
+                return True
+        except ConfigParser.NoOptionError:
+            pass
         
         self.config.set("master_files", self.relative_path(self.file_path(local_file)), str(0))
         self.commit()

@@ -13,7 +13,10 @@ try:
 except:
     import json as simplejson
    
-d = Dispatcher()
+options = [('u', 'username', '', 'Username'),
+           ('p', 'password', '', 'Password')]
+
+d = Dispatcher(globaloptions=options)
 
 @d.command(shortlist=True)
 def init(projectName):
@@ -22,7 +25,7 @@ def init(projectName):
     print "Repository created..."
     
 @d.command(shortlist=True)
-def add(file, language='en'):
+def add(file, language='en', **kwargs):
     '''Add new master file to project. It will be tracked and pushed when there's changes.'''
     repo = Repository()
     if repo.add_master(file):
@@ -39,11 +42,15 @@ def map_locale(masterFile, languageCode, targetFile):
     print "Mapped translation of %s for %s to be saved as %s" % (masterFile, languageCode, targetFile)
 
 @d.command(shortlist=True)
-def translations(output=('o', 'human', "Output format e.g. json")):
+def translations(output=('o', 'human', "Output format e.g. json"), **kwargs):
     '''List translations from given project'''
     repo = Repository();
     
-    username, password = prompt_userpw()
+    username = kwargs.get('username')
+    password = kwargs.get('password')
+    
+    if username == '' or password == '':
+        username, password = prompt_userpw()
     
     translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
     
@@ -57,12 +64,16 @@ def translations(output=('o', 'human', "Output format e.g. json")):
             print "#\t%s [%s] %s" % (tr.get('master_file'), tr.get('iana_code'), progress)
    
 @d.command(shortlist=True)
-def pull():
+def pull(**kwargs):
     '''Pull available translations from server'''
     
     repo = Repository();
     
-    username, password = prompt_userpw()
+    username = kwargs.get('username')
+    password = kwargs.get('password')
+  
+    if username == '' or password == '':
+        username, password = prompt_userpw()
     
     translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
     trlist = translations.list()
@@ -86,7 +97,7 @@ to their default locations with parameter --force" % (tr.get('master_file'), tr.
     exit(0)
 
 @d.command(shortlist=True)
-def push():
+def push(**kwargs):
     '''Push changed master files to server'''
     
     repo = Repository();
@@ -103,8 +114,12 @@ def push():
         for file in files:
             print "#\tmodified: %s" % file
         print "#\n"
-    
-    username, password = prompt_userpw()
+  
+    username = kwargs.get('username')
+    password = kwargs.get('password')
+  
+    if username == '' or password == '':
+        username, password = prompt_userpw()
     
     for file in files:
         platformId = autodetect_fileformat(repo.file_path(file))
@@ -122,7 +137,7 @@ def push():
     exit(0)
     
 @d.command(shortlist=True)
-def status():
+def status(**kwargs):
     '''Project status'''
     repo = Repository()
     
@@ -171,6 +186,7 @@ def prompt_userpw():
     password = getpass.getpass('Password (https://www.getlocalization.com):')
     
     return username, password
+
 
 def main():
     #print "Get Localization CLI (C) 2010-2013 Synble Ltd. All rights reserved.\n"
