@@ -58,6 +58,10 @@ class Repository(object):
         """
         Get file path for those files that are given from command-line
         """
+        
+        if file.startswith('/') or file.startswith('\\'):
+            return file
+        
         return os.path.join(self.root, os.getcwd() + '/' + file)
         
     def relative_path(self, file):
