@@ -19,7 +19,7 @@ options = [('u', 'username', '', 'Username'),
 d = Dispatcher(globaloptions=options)
 
 @d.command(shortlist=True)
-def init(projectName):
+def init(projectName, **kwargs):
     '''Create a local repository to working directory and link it to existing Get Localization project.'''
     Repository.create_repository(projectName)
     print "Repository created..."

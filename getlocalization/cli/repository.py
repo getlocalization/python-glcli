@@ -31,7 +31,10 @@ class Repository(object):
         config.add_section('locale_map')
         config.add_section('status')
         
-        os.makedirs('.gl')
+        try:
+            os.makedirs('.gl')
+        except:
+            pass
         
         root = os.getcwd() + '/'
         
