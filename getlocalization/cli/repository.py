@@ -1,5 +1,6 @@
 import ConfigParser, os
 import os.path
+import hashlib
 try:
     import simplejson
 except:
@@ -94,9 +95,15 @@ class Repository(object):
         self.commit()
         return True
  
+    def get_file_hash(self, local_file):
+        m = hashlib.md5()
+        for line in open(local_file, 'rb'):
+            m.update(line)
+        return m.hexdigest()
+    
     def touch_master(self, local_file):
-        mtime = os.path.getmtime(self.relative_to_root(local_file))
-        self.config.set("master_files", self.relative_path(self.relative_to_root(local_file)), str(mtime))
+        #mtime = os.path.getmtime(self.relative_to_root(local_file))
+        self.config.set("master_files", self.relative_path(self.relative_to_root(local_file)), self.get_file_hash(self.relative_to_root(local_file)))
         self.commit()
  
     def add_locale_map(self, master_file, languageCode, localFile):
@@ -121,10 +128,15 @@ class Repository(object):
         items = self.config.items('master_files')
         
         for item in items:
-            mtime = os.path.getmtime(self.relative_to_root(item[0]))
+            hash = self.get_file_hash(self.relative_to_root(item[0]))
             
-            if float(mtime) > float(item[1]):
+            if hash != item[1]:
                 files.append(item[0])
+                
+            #mtime = os.path.getmtime(self.relative_to_root(item[0]))
+            
+            #if float(mtime) > float(item[1]):
+            #    files.append(item[0])
         
         return files
     

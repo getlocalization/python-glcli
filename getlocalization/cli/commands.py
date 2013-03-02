@@ -62,7 +62,16 @@ def translations(output=('o', 'human', "Output format e.g. json"), **kwargs):
         for tr in trlist:
             progress =  str(int(round(float(tr.get('progress'))))) + "%"
             print "#\t%s [%s] %s" % (tr.get('master_file'), tr.get('iana_code'), progress)
-   
+
+@d.command(shortlist=True)
+def remote(**kwargs):
+    '''Return remote project name'''
+    repo = Repository();
+    
+    print repo.get_project_name()
+    
+    exit(0)
+       
 @d.command(shortlist=True)
 def pull(**kwargs):
     '''Pull available translations from server'''
