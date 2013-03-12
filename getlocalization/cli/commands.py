@@ -36,7 +36,7 @@ def add(file, language='en', **kwargs):
     pass
     
 @d.command(shortlist=True)
-def map_locale(masterFile, languageCode, targetFile):
+def map_locale(masterFile, languageCode, targetFile, **kwargs):
     '''Map translation of a given master file to local file. When file is pulled from server, it's saved to given target file.'''
     Repository().add_locale_map(masterFile, languageCode, targetFile)
     print "Mapped translation of %s for %s to be saved as %s" % (masterFile, languageCode, targetFile)
