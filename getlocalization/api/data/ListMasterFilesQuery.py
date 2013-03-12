@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from getlocalization.api.client.Query import Query
 from getlocalization.api.client.QuerySecurityException import QuerySecurityException
 from getlocalization.api.client.QueryException import QueryException
+from getlocalization.api.GLProject import SERVER
 
 try:
     import simplejson
@@ -45,7 +46,7 @@ class ListMasterFilesQuery(Query):
     def doQuery(self):
         """ generated source for method doQuery """
         try:
-            url = "https://www.getlocalization.com/" + self.projectId + "/api/list-master/json";
+            url = SERVER + self.projectId + "/api/list-master/json";
             json = self.getFile(url)
             data = simplejson.loads(json)
             if data.get('success') != '1':

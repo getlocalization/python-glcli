@@ -1,6 +1,7 @@
 
 from getlocalization.api.client.Query import Query
 from getlocalization.api.client.QuerySecurityException import QuerySecurityException
+from getlocalization.api.GLProject import SERVER
 
 class CreateMasterFileQuery(Query):
     # 
@@ -22,7 +23,7 @@ class CreateMasterFileQuery(Query):
 
     def doQuery(self):
         try:
-            url = "https://www.getlocalization.com/" + self.projectId + "/api/create-master/" + self.platformId + "/" + self.languageId;
+            url = SERVER + self.projectId + "/api/create-master/" + self.platformId + "/" + self.languageId;
             self.postFile(self.file_, self.pathname, url)
         except QuerySecurityException as cse:
             #  Making sure that URL starts with https.

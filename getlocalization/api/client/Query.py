@@ -50,8 +50,8 @@ class Query(object):
   
     def postFile(self, file_, pathname, url):
         """ generated source for method postFile """
-        if self.forcedSSL and not url.startswith("https"):
-            raise QuerySecurityException("SSL is required with basic auth")
+        #if self.forcedSSL and not url.startswith("https"):
+        #    raise QuerySecurityException("SSL is required with basic auth")
         
         request = urllib2.Request(url)
         
@@ -89,8 +89,8 @@ class Query(object):
         
     def getFile(self, url):
         """ generated source for method getFile """
-        if self.forcedSSL and not url.startswith("https"):
-            raise QuerySecurityException("SSL is required with basic auth")
+        #if self.forcedSSL and not url.startswith("https"):
+        #    raise QuerySecurityException("SSL is required with basic auth")
         
         request = urllib2.Request(url)
         self.set_basicauth(request)

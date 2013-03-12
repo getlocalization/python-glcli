@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from getlocalization.api.client.Query import Query
 from getlocalization.api.client.QuerySecurityException import QuerySecurityException
 from getlocalization.api.client.QueryException import QueryException
+from getlocalization.api.GLProject import SERVER
 
 import tempfile, os
 
@@ -50,7 +51,7 @@ class TranslationsQuery(Query):
     def doQuery(self):
         """ generated source for method doQuery """
         try:
-            url = "https://www.getlocalization.com/" + self.projectId + "/api/translations/zip";
+            url = SERVER + self.projectId + "/api/translations/zip";
 
             data = self.getFile(url);
 

@@ -28,6 +28,8 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 """
 
+#SERVER = "https://www.getlocalization.com/"
+SERVER = "http://dbox.getlocalization.com:8000/"
 
 class GLProject(object):
     """ generated source for class GLProject """

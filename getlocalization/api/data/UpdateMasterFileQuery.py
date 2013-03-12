@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from getlocalization.api.client.Query import Query
 from getlocalization.api.client.QuerySecurityException import QuerySecurityException
 from getlocalization.api.client.QueryException import QueryException
+from getlocalization.api.GLProject import SERVER
 
 class UpdateMasterFileQuery(Query):
     """ generated source for class UpdateMasterFileQuery """
@@ -50,7 +51,7 @@ class UpdateMasterFileQuery(Query):
     def doQuery(self):
         """ generated source for method doQuery """
         try:
-            url = "https://www.getlocalization.com/" + self.projectId + "/api/update-master";
+            url = SERVER + self.projectId + "/api/update-master";
             self.postFile(self.file_, self.pathname, url)
         except QuerySecurityException as cse:
             #  Making sure that URL starts with https.
