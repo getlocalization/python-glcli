@@ -1,18 +1,18 @@
+
 import getpass
 import math, os, sys
 
 from getlocalization.cli.opster import command, Dispatcher
 from getlocalization.cli.repository import Repository
+
 from getlocalization.api.files.GLMasterFile import GLMasterFile
+
 from getlocalization.api.files.FileFormat import autodetect_fileformat
 from getlocalization.api.GLProject import GLProject
 from getlocalization.api.files.GLTranslations import GLTranslations
 
-try:
-    import simplejson
-except:
-    import json as simplejson
-   
+import json as simplejson
+
 options = [('u', 'username', '', 'Username'),
            ('p', 'password', '', 'Password')]
 
@@ -54,14 +54,17 @@ def translations(output=('o', 'human', "Output format e.g. json"), **kwargs):
     
     translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
     
-    trlist = translations.list()
+    try:
+        trlist = translations.list()
     
-    if output == 'json':
-        print simplejson.dumps(trlist)
-    else:
-        for tr in trlist:
-            progress =  str(int(round(float(tr.get('progress'))))) + "%"
-            print "#\t%s [%s] %s" % (tr.get('master_file'), tr.get('iana_code'), progress)
+        if output == 'json':
+            print simplejson.dumps(trlist)
+        else:
+            for tr in trlist:
+                progress =  str(int(round(float(tr.get('progress'))))) + "%"
+                print "#\t%s [%s] %s" % (tr.get('master_file'), tr.get('iana_code'), progress)
+    except:
+        print "# Project is empty"
 
 @d.command(shortlist=True)
 def remote(**kwargs):
@@ -84,26 +87,32 @@ def pull(**kwargs):
     if username == '' or password == '':
         username, password = prompt_userpw()
     
-    translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
-    trlist = translations.list()
-    repo.save_status(trlist)
-           
-    print "#"
-                      
-    for tr in trlist:
-        local_file = repo.get_locale_map(tr.get('master_file'), tr.get('iana_code'))
-        if local_file is None:
-            print "# Warning: Skipping file %s (%s). Map local file first\n# e.g. with command: gl map-locale %s %s %s.\n# You can also force download files \
-to their default locations with parameter --force" % (tr.get('master_file'), tr.get('iana_code'), tr.get('master_file'), tr.get('iana_code'), tr.get('filename'))
-            print "#"
-            continue
-        
-        translations.save_translation_file(tr.get('master_file'), tr.get('iana_code'), repo.relative_to_root(local_file))
-        
-        print "# Translation file %s updated" % local_file
+    try:
+        translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
+        trlist = translations.list()
+        repo.save_status(trlist)
+               
         print "#"
-    
-    sys.exit(0)
+                          
+        for tr in trlist:
+            local_file = repo.get_locale_map(tr.get('master_file'), tr.get('iana_code'))
+            if local_file is None:
+                print "# Warning: Skipping file %s (%s). Map local file first\n# e.g. with command: gl map-locale %s %s %s.\n# You can also force download files \
+    to their default locations with parameter --force" % (tr.get('master_file'), tr.get('iana_code'), tr.get('master_file'), tr.get('iana_code'), tr.get('filename'))
+                print "#"
+                continue
+            
+            translations.save_translation_file(tr.get('master_file'), tr.get('iana_code'), repo.relative_to_root(local_file))
+            
+            print "# Translation file %s updated" % local_file
+            print "#"
+        
+        sys.exit(0)
+    except:
+        print "#"
+        print "# Project is empty"
+        print "#"
+        sys.exit(1)
 
 @d.command(shortlist=True)
 def push(**kwargs):
@@ -200,3 +209,4 @@ def prompt_userpw():
 def main():
     #print "Get Localization CLI (C) 2010-2013 Synble Ltd. All rights reserved.\n"
     d.dispatch()
+    

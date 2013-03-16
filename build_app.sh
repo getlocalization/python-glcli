@@ -1,1 +1,1 @@
-python setup.py py2app -C
+python setup.py py2app --no-chdir

@@ -1,12 +1,13 @@
+
 import ConfigParser, os
+
 import os.path
+
 import hashlib
 import sys
-try:
-    import simplejson
-except:
-    import json as simplejson
-   
+
+import json as simplejson
+
 class Repository(object):
     def __init__(self):
         self.config = ConfigParser.ConfigParser()

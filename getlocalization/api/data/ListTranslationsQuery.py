@@ -32,10 +32,7 @@ from getlocalization.api.client.QuerySecurityException import QuerySecurityExcep
 from getlocalization.api.client.QueryException import QueryException
 from getlocalization.api.GLProject import SERVER
 
-try:
-    import simplejson
-except:
-    import json as simplejson
+import json as simplejson
     
 class ListTranslationsQuery(Query):
     def __init__(self, projectId):
