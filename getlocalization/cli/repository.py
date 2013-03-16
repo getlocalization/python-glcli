@@ -1,6 +1,7 @@
 import ConfigParser, os
 import os.path
 import hashlib
+import sys
 try:
     import simplejson
 except:
@@ -17,7 +18,7 @@ class Repository(object):
             
             self.root = os.getcwd() + '/'
             
-            exit(2)
+            sys.exit(2)
             
         self.config.read([self.root + '.gl/repository'])
     

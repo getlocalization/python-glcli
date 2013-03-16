@@ -1,5 +1,5 @@
 import getpass
-import math, os
+import math, os, sys
 
 from getlocalization.cli.opster import command, Dispatcher
 from getlocalization.cli.repository import Repository
@@ -70,7 +70,7 @@ def remote(**kwargs):
     
     print repo.get_project_name()
     
-    exit(0)
+    sys.exit(0)
        
 @d.command(shortlist=True)
 def pull(**kwargs):
@@ -103,7 +103,7 @@ to their default locations with parameter --force" % (tr.get('master_file'), tr.
         print "# Translation file %s updated" % local_file
         print "#"
     
-    exit(0)
+    sys.exit(0)
 
 @d.command(shortlist=True)
 def push(**kwargs):
@@ -143,7 +143,7 @@ def push(**kwargs):
         repo.touch_master(file)
     
     print "# Done"
-    exit(0)
+    sys.exit(0)
     
 @d.command(shortlist=True)
 def status(**kwargs):
@@ -186,7 +186,7 @@ def status(**kwargs):
             
     print "#"
     
-    exit(exit_code)
+    sys.exit(exit_code)
     pass
 
 def prompt_userpw():
