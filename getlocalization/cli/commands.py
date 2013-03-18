@@ -1,6 +1,7 @@
 
 import getpass
 import math, os, sys
+import traceback
 
 from getlocalization.cli.opster import command, Dispatcher
 from getlocalization.cli.repository import Repository
@@ -87,6 +88,7 @@ def pull(**kwargs):
     if username == '' or password == '':
         username, password = prompt_userpw()
     
+    exitVal = 0
     try:
         translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
         trlist = translations.list()
@@ -106,13 +108,13 @@ def pull(**kwargs):
             
             print "# Translation file %s updated" % local_file
             print "#"
-        
-        sys.exit(0)
     except:
         print "#"
         print "# Project is empty"
         print "#"
-        sys.exit(1)
+        exitVal = 1
+        
+    sys.exit(exitVal)
 
 @d.command(shortlist=True)
 def push(**kwargs):
@@ -126,7 +128,7 @@ def push(**kwargs):
         print "#"
         print "# Nothing to push"
         print "#"
-        exit(1)
+        sys.exit(1)
     else:
         print "#\n# Changes not pushed:\n#"
         for file in files:
