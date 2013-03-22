@@ -60,9 +60,6 @@ class Query(object):
         # build form
         fhandle = open(file_)
         form = MultiPartForm()  
-    
-        print "File: " + file_
-        print "Pathname:" + pathname
         
         form.addFile('file', pathname, fhandle)
         form.addField('name', pathname)

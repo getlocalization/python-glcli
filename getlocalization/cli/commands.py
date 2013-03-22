@@ -97,7 +97,7 @@ def pull(**kwargs):
         print "#"
                           
         for tr in trlist:
-            local_file = repo.get_locale_map(tr.get('master_file'), tr.get('iana_code'))
+            local_file = repo.get_mapped_locale(tr.get('master_file'), tr.get('iana_code'))
             if local_file is None:
                 print "# Warning: Skipping file %s (%s). Map local file first\n# e.g. with command: gl map-locale %s %s %s.\n# You can also force download files \
     to their default locations with parameter --force" % (tr.get('master_file'), tr.get('iana_code'), tr.get('master_file'), tr.get('iana_code'), tr.get('filename'))
@@ -153,9 +153,55 @@ def push(**kwargs):
         
         repo.touch_master(file)
     
+    push_translations(repo, username, password)
+  
     print "# Done"
     sys.exit(0)
+
+"""
+@d.command(shortlist=True)
+def push_tr(**kwargs):
+    repo = Repository();
+    username = kwargs.get('username')
+    password = kwargs.get('password')
+  
+    if username == '' or password == '':
+        username, password = prompt_userpw()
+        
+    push_translations(repo, username, password)
+"""
+
+def push_translations(repo, username, password):
+    # Push translations that don't exist
+    translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
     
+    try:
+        trlist = translations.list()
+    except:
+        pass
+      
+    locale_map = repo.get_locale_map()   
+    for locale in locale_map:
+        tr_file = repo.parse_locale(locale[0])
+        local_file = locale[1]
+        
+        found = False
+        for tr in trlist:
+            if tr.get('master_file') == tr_file[0] and tr.get('iana_code') == tr_file[1]:
+                found = True
+        
+        if not found:
+            try:
+                translations.update_translation_file(local_file, tr_file[0], tr_file[1])
+            except:
+                traceback.print_exc()
+                print "# Updating failed"
+        else:
+            print "#"
+            print "# File already exists on server-side, use --force to force push it"
+            print "#"
+        
+ 
 @d.command(shortlist=True)
 def status(**kwargs):
     '''Project status'''
@@ -170,7 +216,7 @@ def status(**kwargs):
         
         print "# Mapped files:\n#"
         for tr in trlist:
-            local_file = repo.get_locale_map(tr.get('master_file'), tr.get('iana_code'))
+            local_file = repo.get_mapped_locale(tr.get('master_file'), tr.get('iana_code'))
             
             progress =  str(int(round(float(tr.get('progress'))))) + "%"
             

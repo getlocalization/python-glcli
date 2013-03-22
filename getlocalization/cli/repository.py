@@ -112,11 +112,19 @@ class Repository(object):
         self.config.set("locale_map", self.relative_path(self.file_path(master_file)) + "/" + languageCode, self.relative_path(localFile))
         self.commit()
     
-    def get_locale_map(self, master_file, languageCode):
+    def get_mapped_locale(self, master_file, languageCode):
         try:
             return self.config.get("locale_map", master_file + "/" + languageCode)
         except ConfigParser.NoOptionError:
             return None
+    
+    def parse_locale(self, locale_file):
+        idx = locale_file.rfind('/')
+        
+        return [locale_file[:idx], locale_file[idx+1:]]
+        
+    def get_locale_map(self):
+        return self.config.items("locale_map")
     
     def commit(self):
         with open(self.root + '.gl/repository', 'wb') as configfile:

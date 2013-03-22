@@ -31,6 +31,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from getlocalization.api.data.TranslationsQuery import TranslationsQuery
 from getlocalization.api.data.ListTranslationsQuery import ListTranslationsQuery
 from getlocalization.api.data.TranslationFileQuery import TranslationFileQuery
+from getlocalization.api.data.UpdateTranslationFileQuery import UpdateTranslationFileQuery
+
 from getlocalization.api.client.QueryException import QueryException
 from getlocalization.api.client.QuerySecurityException import QuerySecurityException
 from getlocalization.api.GLException import GLException
@@ -126,6 +128,21 @@ class GLTranslations(object):
         except Exception as e:
             raise GLException("Unable to download translations: " + str(e))
 
+    def update_translation_file(self, localFile, masterFile, languageCode):
+        query = UpdateTranslationFileQuery(localFile, self.myProject.getProjectName(), masterFile, languageCode)
+        query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
+       
+        try:
+            query.doQuery()
+        except QueryException as e:
+            if e.getStatusCode() == 401:
+                raise GLException("Authentication error, please check your username and password" + str(e))
+            else:
+                raise GLException("Error when processing the query: " + str(e))
+        except Exception as e:
+            raise GLException("Unable to download translations: " + str(e))
+
+        
     def unzip(self, zip, target):
         zipf = zipfile.ZipFile(zip)
         zipf.extractall(path=target)
