@@ -153,14 +153,14 @@ def push(**kwargs):
         
         repo.touch_master(file)
     
-    push_translations(repo, username, password)
+    #push_translations(repo, username, password)
   
     print "# Done"
     sys.exit(0)
 
-"""
 @d.command(shortlist=True)
 def push_tr(**kwargs):
+    '''Push local mapped translations that do not exist on server'''
     repo = Repository();
     username = kwargs.get('username')
     password = kwargs.get('password')
@@ -169,7 +169,6 @@ def push_tr(**kwargs):
         username, password = prompt_userpw()
         
     push_translations(repo, username, password)
-"""
 
 def push_translations(repo, username, password):
     # Push translations that don't exist
@@ -194,8 +193,8 @@ def push_translations(repo, username, password):
             try:
                 translations.update_translation_file(local_file, tr_file[0], tr_file[1])
             except:
-                traceback.print_exc()
-                print "# Updating failed"
+                #traceback.print_exc()
+                print "# Updating file '" + local_file + "' failed"
         else:
             print "#"
             print "# File already exists on server-side, use --force to force push it"
