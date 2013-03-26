@@ -153,8 +153,6 @@ def push(**kwargs):
         
         repo.touch_master(file)
     
-    #push_translations(repo, username, password)
-  
     print "# Done"
     sys.exit(0)
 
