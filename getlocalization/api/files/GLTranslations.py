@@ -39,6 +39,7 @@ from getlocalization.api.GLException import GLException
 from getlocalization.api.GLProject import GLProject
 
 import zipfile
+import os, errno
 
 class GLTranslations(object):
     """ generated source for class GLTranslations """
@@ -115,9 +116,15 @@ class GLTranslations(object):
             raise GLException("Unable to download translations: " + str(e))
 
     def save_translation_file(self, masterFile, languageCode, targetFile):
+        try:
+            os.makedirs(os.path.dirname(targetFile))
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+        
         query = TranslationFileQuery(self.myProject.getProjectName(), masterFile, languageCode, targetFile)
         query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
-       
+        
         try:
             query.doQuery()
         except QueryException as e:

@@ -109,6 +109,7 @@ def pull(**kwargs):
             print "# Translation file %s updated" % local_file
             print "#"
     except:
+        print traceback.format_exc()
         print "#"
         print "# Project is empty"
         print "#"
