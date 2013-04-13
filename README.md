@@ -1,12 +1,13 @@
 Get Localization CLI
 ============
 
-1. Getting started
+## Getting started ##
 
-Installing 
+<pre>python setup.py install</pre>
 
-2. Basics
+## Basics ##
 
+<pre>
 usage: gl <command> [options]
 
 commands:
@@ -20,9 +21,10 @@ commands:
  remote        Return remote project name
  status        Project status
  translations  List translations from given project
+</pre>
 
-3. Adding files
-4. Mapping locales
-5. Branching with version control
-6. Pushing (push) and pushing translations (push-tr) 
+## Adding files ##
+## Mapping locales ##
+## Branching with version control ##
+## Pushing (push) and pushing translations (push-tr) ##
 
