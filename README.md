@@ -7,6 +7,8 @@ Get Localization CLI
 
 ## Basics ##
 
+With Get Localization CLI you can push and pull translation files. 
+
 <pre>
 usage: gl <command> [options]
 
@@ -22,6 +24,8 @@ commands:
  status        Project status
  translations  List translations from given project
 </pre>
+
+## Init project ##
 
 ## Adding files ##
 ## Mapping locales ##
