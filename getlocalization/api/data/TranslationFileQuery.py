@@ -32,6 +32,7 @@ from getlocalization.api.client.QuerySecurityException import QuerySecurityExcep
 from getlocalization.api.client.QueryException import QueryException
 from getlocalization.api.GLProject import SERVER
 
+import urllib
 import tempfile, os
 
 class TranslationFileQuery(Query):
@@ -54,9 +55,11 @@ class TranslationFileQuery(Query):
     def doQuery(self):
         """ generated source for method doQuery """
         try:
-            url = SERVER + "%s/api/translations/file/%s/%s/" % (self.projectId, self.masterFile, self.languageCode)
+            url = SERVER + "%s/api/translations/file/%s/%s/" % (self.projectId, urllib.quote(self.masterFile), self.languageCode)
 
+            
             data = self.getFile(url);
+
 
             f = open(self.targetFile, 'w')
             f.write(data)
