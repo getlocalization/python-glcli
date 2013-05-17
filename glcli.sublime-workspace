@@ -1,0 +1,317 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"thumbnail",
+				"thumbnail_key"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/pmuilu/dbox/getlocalization/media/editor/gl.editor_v3.js",
+		"/Users/pmuilu/dbox/getlocalization/media/editor/gl.editor_v3.css",
+		"/Users/pmuilu/dbox/getlocalization/media/editor/gl.component_editor.js",
+		"/Users/pmuilu/dbox/getlocalization/core/pio/document.py",
+		"/Users/pmuilu/Documents/test1.txt",
+		"/Users/pmuilu/dbox/getlocalization/test-settings.py",
+		"/Users/pmuilu/dbox/getlocalization/apptest/ui.py",
+		"/Users/pmuilu/dbox/getlocalization/core/pio/base.py",
+		"/Users/pmuilu/dbox/getlocalization/core/notification.py",
+		"/Users/pmuilu/dbox/getlocalization/pio_server.py",
+		"/Users/pmuilu/dbox/getlocalization/product/strings_filter.py",
+		"/Users/pmuilu/dbox/getlocalization/editor/templates/component_editor_view.html",
+		"/Users/pmuilu/dbox/getlocalization/editor/templates/editor_v3.html",
+		"/Users/pmuilu/dbox/getlocalization/clean_tmp.bat",
+		"/Users/pmuilu/dbox/getlocalization/editor/templates/shortcuts.html",
+		"/Users/pmuilu/dbox/getlocalization/media/js/moui/themes/editor_v3/css/Layout.css",
+		"/Users/pmuilu/dbox/getlocalization/media/editor/gl.textarea.js",
+		"/Users/pmuilu/dbox/getlocalization/core/pio/properties_utf8.py",
+		"/Users/pmuilu/dbox/getlocalization/core/pio/utils/__init__.py",
+		"/Users/pmuilu/dbox/getlocalization/core/pio/xliff.py",
+		"/Users/pmuilu/dbox/getlocalization/bugtest.py",
+		"/Users/pmuilu/Documents/trmem_test.properties",
+		"/Users/pmuilu/dbox/getlocalization/editor/forms.py",
+		"/Users/pmuilu/dbox/getlocalization/editor/models.py",
+		"/Users/pmuilu/dbox/getlocalization/editor/templates/screenshot_upload.html",
+		"/Users/pmuilu/dbox/getlocalization/editor/views.py",
+		"/Users/pmuilu/dbox/getlocalization/utils/picture.py",
+		"/Users/pmuilu/dbox/getlocalization/core/ajax.py",
+		"/Users/pmuilu/dbox/getlocalization/templates/pages/comments.html",
+		"/Users/pmuilu/dbox/getlocalization/editor/templates/right_sidebar.html",
+		"/Users/pmuilu/dbox/getlocalization/media/js/moui/themes/editor_v3/css/Content.css",
+		"/Users/pmuilu/dbox/getlocalization/core/filters.py",
+		"/Users/pmuilu/dbox/getlocalization/editor/urls.py",
+		"/Users/pmuilu/dbox/getlocalization/templates/frontpage/frontpage.html",
+		"/Users/pmuilu/dbox/getlocalization/templates/google_account.html",
+		"/Users/pmuilu/dbox/getlocalization/userprofile/templates/userprofile/account/login.html",
+		"/Users/pmuilu/dbox/getlocalization/core/pio/code_igniter.py",
+		"/Users/pmuilu/dbox/getlocalization/core/glcache.py",
+		"/Users/pmuilu/dbox/getlocalization/core/pio/utils/liberal_jprops.py",
+		"/Users/pmuilu/Documents/fs-template/jprops_utf8.py",
+		"/Users/pmuilu/dbox/getlocalization/core/pio/gljavaproperties.py",
+		"/Users/pmuilu/dbox/getlocalization/core/strings.py",
+		"/Users/pmuilu/dbox/getlocalization/script/patch_iphone_strings.py",
+		"/Users/pmuilu/dbox/getlocalization/media/editor/gl.interpolate.js",
+		"/Users/pmuilu/dbox/getlocalization/product/forms.py",
+		"/Users/pmuilu/dbox/getlocalization/editor/templates/search_and_replace.html",
+		"/Users/pmuilu/Library/Application Support/Sublime Text 2/Packages/User/Python.sublime-settings",
+		"/Users/pmuilu/dbox/getlocalization/getlocalization.sublime-project",
+		"/Users/pmuilu/dbox/getlocalization/gltm/views.py"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Adding",
+			"calc_translated_words",
+			"untransl",
+			"copyTransl",
+			"DOCUM",
+			"copyTranslation",
+			"other",
+			"GLocale",
+			"saveTra",
+			"saveTranslation",
+			"socket",
+			"is_valid_email",
+			"GL-C",
+			"detect_removed_strings",
+			"find_best_similar_string",
+			"find_change_notifications",
+			"MasterString",
+			"TranslatedString",
+			"MasterString(",
+			"find_existing_string",
+			"string_updater",
+			"TranslatedString",
+			"ProductComponent",
+			"ProductVersion",
+			"MasterString",
+			"MAsterString",
+			"ComponentRevision",
+			"ProductRevision",
+			"ProductVersion",
+			"ProductComp",
+			"ProductComponent",
+			"TranslatedString",
+			"TranslatedS",
+			"string_updater",
+			"self.strings",
+			"document",
+			"google",
+			"keydown",
+			"template",
+			"desktopHeader",
+			"add_string_comment",
+			"-header",
+			"comments",
+			"hover",
+			"panel-",
+			"panel-head",
+			"panel-header",
+			"panel-",
+			"default",
+			"clear:",
+			"clear: both",
+			"screenshot",
+			"close",
+			"screenshot_btn",
+			"uploadScreenshotDlg",
+			"screenshot_btn",
+			"FULLTEXT_PATH",
+			"fuzzy",
+			"search_segments",
+			"process_node",
+			"process_target_node",
+			"add_translation",
+			"add_translation\nadd_translation\nadd_translation\nadd_translation\nadd_translation",
+			"add_translation\nadd_translation\nadd_translation\nadd_translation",
+			"add_translation\nadd_translation\nadd_translation",
+			"add_translation\nadd_translation",
+			"add_translation",
+			"_split_key_value",
+			"_escape",
+			"_unescape",
+			"encode",
+			"master_string",
+			"Product(",
+			"Product",
+			"cache_string",
+			"simple",
+			"string_data",
+			"loadedStringHandler",
+			"cache_string",
+			"ajaxLoadString",
+			"get_unicode_string",
+			"encoding",
+			"get_all",
+			"cache_string",
+			"\\t",
+			"upload",
+			"console.",
+			".cos",
+			"137.",
+			"hdg",
+			"initialHeading",
+			"gyro",
+			"kalman",
+			"m_q",
+			"LastGain",
+			"m_r"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"test-p",
+				"test-settings.py"
+			],
+			[
+				"goog",
+				"templates/google_account.html"
+			],
+			[
+				"comments.",
+				"templates/pages/comments.html"
+			],
+			[
+				"gl.editor.css",
+				"media/editor/gl.editor_v3.css"
+			],
+			[
+				"comments.html",
+				"templates/pages/comments.html"
+			],
+			[
+				"gl.ed",
+				"media/editor/gl.editor_v3.css"
+			],
+			[
+				"picture",
+				"utils/picture.py"
+			],
+			[
+				"glcac",
+				"core/glcache.py"
+			],
+			[
+				"catche_string",
+				"script/patch_iphone_strings.py"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 273.0,
+	"status_bar_visible": true
+}
