@@ -52,6 +52,8 @@ Instead of adding translated files, you can map the local file to the server tra
 gl map-locale [master-filename] [language-IANA-code] [translation-filename-in-local-filesystem]
 </pre>
 
+Note that translation-filename-in-local-filesystem doesn't need to exist actually in file system. If it does, see push-tr command as well. 
+
 Example:
 
 <pre>
@@ -61,6 +63,27 @@ Mapped translation of master/English.properties for fi to be saved as locale/Fin
 
 When you run gl pull, the file that contains Finnish translations (IANA code: fi) of master/English.properties file is saved to locale/Finnish.properties file.
 
-## Branching with version control ##
-## Pushing (push) and pushing translations (push-tr) ##
+## Push ##
+
+<pre>
+$ gl push
+</pre>
+
+push command sends all the altered *master* files to Get Localization server for translation.
+
+## Pull ##
+
+<pre>
+$ gl pull
+</pre>
+
+pull command fetches all the updated translation files from Get Localization server.
+
+## Pushing translations (Use with caution) ##
+
+<pre>
+gl push-tr
+</pre>
+
+push-tr command is meant for pushing existing translations to Get Localization server. Typically you want to do this only once (when you init your project and you have translations in local files that don't yet exist on server). After this translations are managed by Get Localization server so pushing translation from local machine is not necessary or even recommended. In order to this work, you need to map locales (see 'Mapping Locales' and map-locale command). 
 
