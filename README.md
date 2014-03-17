@@ -26,10 +26,11 @@ commands:
 </pre>
 
 ## Init project ##
-
+<pre>
   $ gl init [project-name]
   Repository created...
-  
+</pre>
+
 project-name  project name should match with your project name on Get Localization server: https://www.getlocalization.com/[project-name]/
  
 Creates Get Localization repository to current directory. Repository meta-data is saved under .gl folder. This can be added to your version control (git, hg, svn etc). If you need different configuration for different branches, it's possible.
