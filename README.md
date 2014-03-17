@@ -77,7 +77,7 @@ push command sends all the altered *master* files to Get Localization server for
 $ gl pull
 </pre>
 
-pull command fetches all the updated translation files from Get Localization server.
+pull command fetches all the updated translation files from Get Localization server. Note that only mapped locales will be downloaded and stored. If you use --force the default location will be used.
 
 ## Pushing translations (Use with caution) ##
 
