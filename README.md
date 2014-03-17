@@ -27,8 +27,8 @@ commands:
 
 ## Init project ##
 <pre>
-  $ gl init [project-name]
-  Repository created...
+$ gl init [project-name]
+Repository created...
 </pre>
 
 project-name  project name should match with your project name on Get Localization server: https://www.getlocalization.com/[project-name]/
@@ -37,7 +37,12 @@ Creates Get Localization repository to current directory. Repository meta-data i
 
 ## Adding files ##
 
+<pre>
+$ gl add master/English.properties
+File master/English.properties added successfully.
+</pre>
 
+'add' command is for adding *master* file to repository. I.e. the file that will translated.
 
 ## Mapping locales ##
 ## Branching with version control ##
