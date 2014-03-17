@@ -27,7 +27,14 @@ commands:
 
 ## Init project ##
 
+ gl init
+ 
+Creates Get Localization repository to current directory. Repository meta-data is saved under .gl folder. This can be added to your version control (git, hg, svn etc). If you need different configuration for different branches, it's possible.
+
 ## Adding files ##
+
+
+
 ## Mapping locales ##
 ## Branching with version control ##
 ## Pushing (push) and pushing translations (push-tr) ##
