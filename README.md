@@ -45,6 +45,22 @@ File master/English.properties added successfully.
 'add' command is for adding *master* file to repository. I.e. the file that will translated.
 
 ## Mapping locales ##
+
+Instead of adding translated files, you can map the local file to the server translation. This happens with gl map-locale command:
+
+<pre>
+gl map-locale [master-filename] [language-IANA-code] [translation-filename-in-local-filesystem]
+</pre>
+
+Example:
+
+<pre>
+$ gl map-locale master/English.properties fi locale/Finnish.properties
+Mapped translation of master/English.properties for fi to be saved as locale/Finnish.properties
+</pre>
+
+When you run gl pull, the file that contains Finnish translations (IANA code: fi) of master/English.properties file is saved to locale/Finnish.properties file.
+
 ## Branching with version control ##
 ## Pushing (push) and pushing translations (push-tr) ##
 
