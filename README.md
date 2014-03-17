@@ -3,7 +3,7 @@ Get Localization CLI
 
 ## Getting started ##
 
-<pre>python setup.py install</pre>
+<pre>sudo pip install gl</pre>
 
 ## Basics ##
 
