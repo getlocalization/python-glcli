@@ -4,7 +4,7 @@ import os
 FORMATS = [['.po', 'gettext'],
            ['.properties', 'javaproperties'],
            ['.ini', 'ini'],
-           ['.json', 'json'],
+           ['.json', 'js'],
            ['.resx', 'resx'],
            ['.xliff', 'xliff'],
            ['.ts', 'qt'],
