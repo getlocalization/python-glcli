@@ -13,6 +13,7 @@ FORMATS = [['.po', 'gettext'],
            ['.php', 'phparray'],
            ['.docx', 'docx'],
            ['.txt', 'plain'],
+           ['.yml', 'ruby'],
            ['.strings', 'ios']
           ]
 
