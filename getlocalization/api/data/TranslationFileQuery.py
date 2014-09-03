@@ -55,7 +55,7 @@ class TranslationFileQuery(Query):
     def doQuery(self):
         """ generated source for method doQuery """
         try:
-            url = SERVER + "%s/api/translations/file/%s/%s/" % (self.projectId, urllib.quote(self.masterFile), self.languageCode)
+            url = SERVER + "%s/api/translations/file:%s/%s/" % (self.projectId, urllib.quote(self.masterFile), self.languageCode)
 
             
             data = self.getFile(url);
