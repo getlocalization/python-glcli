@@ -14,12 +14,12 @@ usage: gl <command> [options]
 
 commands:
 
- add           Add new master file to project. It will be tracked and pushed when there's changes.
- init          Create a local repository to working directory and link it to existing Get Localization project.
- map-locale    Map translation of a given master file to local file. When file is pulled from server, it's saved to given target file.
+ add           Add a new master file to project. It will be tracked and pushed when there are changes.
+ init          Create a local repository in the working directory and link it to an existing Get Localization project.
+ map-locale    Map translation of given master file to a local file. When the file is pulled from server, it's saved in the given target file.
  pull          Pull available translations from server
  push          Push changed master files to server
- push-tr       Push local mapped translations that do not exist on server
+ push-tr       Push local mapped translations that don't exist on server
  remote        Return remote project name
  status        Project status
  translations  List translations from given project
@@ -31,9 +31,9 @@ $ gl init [project-name]
 Repository created...
 </pre>
 
-project-name  project name should match with your project name on Get Localization server: https://www.getlocalization.com/[project-name]/
+project-name  Project name should match with your project name on Get Localization server: https://www.getlocalization.com/[project-name]/
  
-Creates Get Localization repository to current directory. Repository meta-data is saved under .gl folder. This can be added to your version control (git, hg, svn etc). If you need different configuration for different branches, it's possible.
+Creates a Get Localization repository to the current directory. Repository meta-data is saved in .gl folder. This can be added to your version control (git, hg, svn etc). If you need a different configuration for different branches, it's possible.
 
 ## Adding files ##
 
@@ -42,17 +42,17 @@ $ gl add master/English.properties
 File master/English.properties added successfully.
 </pre>
 
-'add' command is for adding *master* file to repository. I.e. the file that will translated.
+'add' command is for adding a *master* file to repository. I.e. a file that will translated.
 
 ## Mapping locales ##
 
-Instead of adding translated files, you can map the local file to the server translation. This happens with gl map-locale command:
+Instead of adding translated files, you can map a local file to the translation on the server. This is done with gl map-locale command:
 
 <pre>
 gl map-locale [master-filename] [language-IANA-code] [translation-filename-in-local-filesystem]
 </pre>
 
-Note that translation-filename-in-local-filesystem doesn't need to exist actually in file system. If it does, see push-tr command as well. 
+Note that translation-filename-in-local-filesystem doesn't need to actually exist in the file system. If it does, see push-tr command as well. 
 
 Example:
 
@@ -69,7 +69,7 @@ When you run gl pull, the file that contains Finnish translations (IANA code: fi
 $ gl push
 </pre>
 
-push command sends all the altered *master* files to Get Localization server for translation.
+push command sends all altered *master* files to the Get Localization server for translation.
 
 ## Pull ##
 
@@ -77,7 +77,7 @@ push command sends all the altered *master* files to Get Localization server for
 $ gl pull
 </pre>
 
-pull command fetches all the updated translation files from Get Localization server. Note that only mapped locales will be downloaded and stored. If you use --force the default location will be used.
+pull command fetches all updated translation files from Get Localization server. Note that only mapped locales will be downloaded and stored. If you use --force the default location will be used.
 
 ## Pushing translations (Use with caution) ##
 
@@ -85,5 +85,5 @@ pull command fetches all the updated translation files from Get Localization ser
 gl push-tr
 </pre>
 
-push-tr command is meant for pushing existing translations to Get Localization server. Typically you want to do this only once (when you init your project and you have translations in local files that don't yet exist on server). After this translations are managed by Get Localization server so pushing translation from local machine is not necessary or even recommended. In order to this work, you need to map locales (see 'Mapping Locales' and map-locale command). 
+push-tr command is meant for pushing existing translations to the Get Localization server. Typically you only want to do this once (when you start your project and you have translations in local files that don't yet exist on server). After project start translations are managed by the Get Localization server so pushing translation from local machine is not necessary or even recommended. In order for this to work, you need to map locales (see 'Mapping Locales' and map-locale command). 
 
