@@ -29,11 +29,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 
-TEST_SERVER = "http://dbox.getlocalization.com:8000/"
-
-if TEST_SERVER:
+try:
     SERVER = TEST_SERVER
-else:
+except:
     SERVER = "https://www.getlocalization.com/"
 
 class GLProject(object):
