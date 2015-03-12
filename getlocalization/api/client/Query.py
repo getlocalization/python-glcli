@@ -35,6 +35,24 @@ from getlocalization.api.client.QueryException import QueryException
 
 from multipart_form import MultiPartForm
 
+FORCE_SSL = True
+try:
+    from getlocalization.api.GLProject import TEST_SERVER
+    FORCE_SSL = False
+except:
+    pass
+
+class RequestWithMethod(urllib2.Request):
+    """
+    Courtesy of Benjamin Smedberg (http://benjamin.smedbergs.us/blog/2008-10-21/putting-and-deleteing-in-python-urllib2/)
+    """
+    def __init__(self, method, *args, **kwargs):
+        self._method = method
+        urllib2.Request.__init__(self, *args, **kwargs)
+
+    def get_method(self):
+        return self._method
+
 class Query(object):
     """ generated source for class Query """
     def __init__(self):
@@ -43,15 +61,15 @@ class Query(object):
 
     def setBasicAuth(self, username, password):
         """ generated source for method setBasicAuth """
-        self.forcedSSL = True
+        self.forcedSSL = FORCE_SSL
         self.username = username
         self.password = password
 
   
     def postFile(self, file_, pathname, url):
         """ generated source for method postFile """
-        #if self.forcedSSL and not url.startswith("https"):
-        #    raise QuerySecurityException("SSL is required with basic auth")
+        if self.forcedSSL and not url.startswith("https"):
+            raise QuerySecurityException("SSL is required with basic auth")
         
         request = urllib2.Request(url)
         
@@ -77,23 +95,22 @@ class Query(object):
             return handle.getcode()
         
         except urllib2.HTTPError, e:
-            import traceback
-            print traceback.format_exc()
-            return -1
+            raise QueryException(e.read(), e.code)
 
         except Exception, e:
-            return -1
+            raise QueryException(str(e), 0)
         
     def getFile(self, url):
         """ generated source for method getFile """
-        #if self.forcedSSL and not url.startswith("https"):
-        #    raise QuerySecurityException("SSL is required with basic auth")
+        if self.forcedSSL and not url.startswith("https"):
+            raise QuerySecurityException("SSL is required with basic auth")
         
         request = urllib2.Request(url)
         self.set_basicauth(request)
 
         try:
             handle = urllib2.urlopen(request)
+            
             data = handle.read()
             
             if handle.getcode() != 200:
@@ -102,10 +119,26 @@ class Query(object):
             return data
 
         except urllib2.HTTPError, e:
-            if e.code == 401:
-                return False, "Username or password might not be correct."
-            
-            return False, e.message
+            raise QueryException(e.read(), e.code)
+
+    def removeFile(self, url):
+        """
+        This is not part of the Java API at the moment so this is not generated.
+        """
+        if self.forcedSSL and not url.startswith("https"):
+            raise QuerySecurityException("SSL is required with basic auth")
+        
+        request = RequestWithMethod('DELETE', url)
+        self.set_basicauth(request)
+
+        try:
+            handle = urllib2.urlopen(request)
+
+            if handle.getcode() != 200:
+                raise QueryException(data, handle.getcode())
+
+        except urllib2.HTTPError, e:
+            raise QueryException(e.read(), e.code)
 
     def doQuery(self):
         """ generated source for method doQuery """

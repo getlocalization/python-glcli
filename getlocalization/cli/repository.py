@@ -60,7 +60,6 @@ class Repository(object):
             if tmp == p:
                 break
     
-   
     def file_path(self, file):
         """
         Get file path for those files that are given from command-line
@@ -96,7 +95,21 @@ class Repository(object):
         self.config.set("master_files", self.relative_path(self.file_path(local_file)), str(0))
         self.commit()
         return True
- 
+    
+    def master_exists(self, local_file):
+        try:
+            self.config.get("master_files", self.relative_path(self.file_path(local_file)))
+            return True
+        except ConfigParser.NoOptionError:
+            return False
+
+    def rm_master(self, local_file):
+        successful = self.config.remove_option("master_files", self.relative_path(self.file_path(local_file)))
+        
+        if successful:
+            self.commit()
+        return successful
+
     def get_file_hash(self, local_file):
         m = hashlib.md5()
         for line in open(local_file, 'rb'):

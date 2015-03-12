@@ -21,8 +21,9 @@ commands:
  push          Push changed master files to server
  push-tr       Push local mapped translations that don't exist on server
  remote        Return remote project name
+ remove        Remove master file from project.
  status        Project status
- translations  List translations from given project
+ translations  List translations from current project
 </pre>
 
 ## Init project ##

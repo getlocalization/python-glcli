@@ -11,6 +11,7 @@ from getlocalization.api.files.GLMasterFile import GLMasterFile
 from getlocalization.api.files.FileFormat import autodetect_fileformat
 from getlocalization.api.GLProject import GLProject
 from getlocalization.api.files.GLTranslations import GLTranslations
+from getlocalization.api.GLException import GLException
 
 import json as simplejson
 
@@ -21,30 +22,51 @@ d = Dispatcher(globaloptions=options)
 
 @d.command(shortlist=True)
 def init(projectName, **kwargs):
-    '''Create a local repository to working directory and link it to existing Get Localization project.'''
+    '''Create a local repository in the working directory and link it to an existing Get Localization project.'''
     Repository.create_repository(projectName)
     print "Repository created..."
     
 @d.command(shortlist=True)
 def add(file, language='en', **kwargs):
-    '''Add new master file to project. It will be tracked and pushed when there's changes.'''
+    '''Add a new master file to project. It will be tracked and pushed when there are changes.'''
     repo = Repository()
     if repo.add_master(file):
         print "File %s added successfully." % repo.relative_path(repo.file_path(file))
     else:
         print "Couldn't find a file %s" % repo.relative_path(repo.file_path(file))
+
+@d.command(shortlist=True)
+def remove(file, language='en', **kwargs):
+    '''Remove master file from a remote project. This will remove the master file (and related translations). Local file is not removed.'''
+    repo = Repository()
+
+    if repo.master_exists(file):
+        username = kwargs.get('username')
+        password = kwargs.get('password')
+      
+        if username == '' or password == '':
+            username, password = prompt_userpw()
+       
+        mf = GLMasterFile(GLProject(repo.get_project_name(), username, password), repo.relative_to_root(file), file, None)
         
-    pass
-    
+        try:
+            mf.remove()
+            repo.rm_master(file)
+            print "File %s removed successfully." % repo.relative_path(repo.file_path(file))
+        except GLException as e:
+            print "Unable to remove file from server: " + str(e)
+    else:
+        print "Couldn't find a file %s" % repo.relative_path(repo.file_path(file))
+
 @d.command(shortlist=True)
 def map_locale(masterFile, languageCode, targetFile, **kwargs):
-    '''Map translation of a given master file to local file. When file is pulled from server, it's saved to given target file.'''
+    '''Map translation of given master file to a local file. When the file is pulled from server, it's saved in the given target file.'''
     Repository().add_locale_map(masterFile, languageCode, targetFile)
     print "Mapped translation of %s for %s to be saved as %s" % (masterFile, languageCode, targetFile)
 
 @d.command(shortlist=True)
 def translations(output=('o', 'human', "Output format e.g. json"), **kwargs):
-    '''List translations from given project'''
+    '''List translations from current project'''
     repo = Repository();
     
     username = kwargs.get('username')
@@ -75,7 +97,8 @@ def remote(**kwargs):
     print repo.get_project_name()
     
     sys.exit(0)
-       
+
+
 @d.command(shortlist=True)
 def pull(**kwargs):
     '''Pull available translations from server'''
@@ -142,6 +165,8 @@ def push(**kwargs):
     if username == '' or password == '':
         username, password = prompt_userpw()
     
+    error = False
+
     for file in files:
         platformId = autodetect_fileformat(repo.file_path(file))
         
@@ -150,16 +175,21 @@ def push(**kwargs):
             return
         
         mf = GLMasterFile(GLProject(repo.get_project_name(), username, password), repo.relative_to_root(file), file, platformId)
-        mf.push()
+
+        try:
+            mf.push()
+            repo.touch_master(file)
+        except GLException as e:
+            error = True
+            print e.message
         
-        repo.touch_master(file)
-    
-    print "# Done"
+    if not error:
+        print "# Done"
     sys.exit(0)
 
 @d.command(shortlist=True)
 def push_tr(**kwargs):
-    '''Push local mapped translations that do not exist on server'''
+    '''Push local mapped translations that don't exist on server'''
     repo = Repository();
     username = kwargs.get('username')
     password = kwargs.get('password')

@@ -31,6 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from getlocalization.api.data.ListMasterFilesQuery import ListMasterFilesQuery
 from getlocalization.api.data.CreateMasterFileQuery import CreateMasterFileQuery
 from getlocalization.api.data.UpdateMasterFileQuery import UpdateMasterFileQuery
+from getlocalization.api.data.RemoveMasterFileQuery import RemoveMasterFileQuery
 
 from getlocalization.api.client.QueryException import QueryException
 from getlocalization.api.client.QuerySecurityException import QuerySecurityException
@@ -78,7 +79,7 @@ class GLMasterFile(object):
             return self.createdToServer
         except QueryException as e:
             if e.getStatusCode() == 401:
-                raise GLException("Authentication error, please check your username and password" + str(e))
+                raise GLException("Username or password incorrect or you might not have required acl to this project.")
             else:
                 raise GLException("Error when processing the query: " + e.getMessage())
         except Exception as e:
@@ -111,8 +112,22 @@ class GLMasterFile(object):
         try:
             query.doQuery()
         except Exception as e:
-            print traceback.format_exc()
-            raise GLException("Unable to create master file to Get Localization: " + str(e))
+            if e.statusCode == 401:
+                raise GLException("Username or password incorrect or you might not have required acl to this project.")
+            else:
+                raise GLException("Unable to add new master file: " + str(e))
+
+    def remove(self):
+        """ this API is not part of the original Java implementation. """
+        query = RemoveMasterFileQuery(self.myProject.getProjectName(), self.getName())
+        query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
+        try:
+            query.doQuery()
+        except QueryException as e:
+            if e.statusCode == 401:
+                raise GLException("Username or password incorrect or you might not have required acl to this project.")
+            else:
+                raise GLException("Unable to remove master file from your project: " + str(e))
 
     def getName(self):
         return self.name

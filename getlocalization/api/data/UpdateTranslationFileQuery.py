@@ -13,7 +13,7 @@ class UpdateTranslationFileQuery(Query):
 
     def doQuery(self):
         try:
-            url = SERVER + self.projectId + "/api/translations/file/" + self.masterFile + "/" + self.languageId + "/";
+            url = SERVER + self.projectId + "/api/translations/file:" + self.masterFile + "/" + self.languageId + "/";
             self.postFile(self.file_, self.masterFile + "_" + self.languageId, url)
         except QuerySecurityException as cse:
             #  Making sure that URL starts with https.

@@ -32,24 +32,26 @@ from getlocalization.api.client.QuerySecurityException import QuerySecurityExcep
 from getlocalization.api.client.QueryException import QueryException
 from getlocalization.api.GLProject import SERVER
 
-import json as simplejson
-    
-class ListTranslationsQuery(Query):
-    def __init__(self, projectId):
-        super(ListTranslationsQuery, self).__init__()
-        self.projectId = projectId
-        self.data = None
+import urllib
+import tempfile, os
 
+class RemoveMasterFileQuery(Query):
+    """ This API does not exist in original Java implementation but follows the same syntax.  """
+    def __init__(self, projectId, masterFile):
+        super(RemoveMasterFileQuery, self).__init__()
+        self.projectId = projectId
+        self.masterFile = masterFile
+        
     def doQuery(self):
-        """ generated source for method doQuery """
         try:
-            url = SERVER + self.projectId + "/api/translations/list/json";
-            json = self.getFile(url)
-            self.data = simplejson.loads(json)
+            url = SERVER + "%s/api/master/file:%s/" % (self.projectId, urllib.quote(self.masterFile))
+            
+            self.removeFile(url)
+            
         except QuerySecurityException as cse:
             #  Making sure that URL starts with https.
             #cse.printStackTrace()
             raise cse
 
-    def getList(self):
-        return self.data
+    
+    
