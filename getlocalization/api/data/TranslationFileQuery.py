@@ -55,11 +55,11 @@ class TranslationFileQuery(Query):
     def doQuery(self):
         """ generated source for method doQuery """
         try:
-            url = SERVER + "%s/api/translations/file:%s/%s/" % (self.projectId, urllib.quote(self.masterFile), self.languageCode)
-
-            
-            data = self.getFile(url);
-
+            # Note: the pathfile api used is is private and may change in the future. Official version is api/translations/file/. Difference is that this
+            # endpoint can cope with complex file path structures e.g. ../../../hello/world/../test.txt as component name is passed as a parameter.
+            url = SERVER + "%s/api/translations/pathfile?component=%s&iana_code=%s" % (self.projectId, urllib.quote(self.masterFile), self.languageCode)
+            print url
+            data = self.getFile(url)
 
             f = open(self.targetFile, 'w')
             f.write(data)
