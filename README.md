@@ -88,7 +88,7 @@ gl push-tr
 
 push-tr command is meant for pushing existing translations to the Get Localization server. Typically you only want to do this once (when you start your project and you have translations in local files that don't yet exist on server). After project start translations are managed by the Get Localization server so pushing translation from local machine is not necessary or even recommended. In order for this to work, you need to map locales (see 'Mapping Locales' and map-locale command). 
 
-### Working with git, mercurial (hg) and version management systems
+### Working with git, mercurial (hg) and other version management systems
 
 It's recommended to add gl configuration files to your version management system. You can simply add the .gl directory that is created under the directory where you executed the gl init command. Configuration files do not contain any usernames or passwords, only the information about the repository (e.g. mapped translation files and master files)
 
