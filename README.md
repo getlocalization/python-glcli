@@ -5,6 +5,8 @@ Get Localization CLI
 
 <pre>sudo pip install gl</pre>
 
+<small>Prerequisite is that you have Python 2.x (and pip) installed on your computer. This is typically already available on Mac OS X and Linux machines, however for Windows you may have to install it from <a href="https://www.python.org/downloads/windows/">Python website</a>.</small>
+
 ## Basics ##
 
 With Get Localization CLI you can push and pull translation files. 
