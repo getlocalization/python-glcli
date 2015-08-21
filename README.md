@@ -5,7 +5,7 @@ Get Localization CLI
 
 <pre>sudo pip install gl</pre>
 
-<small>Prerequisite is that you have Python 2.x (and pip) installed on your computer. This is typically already available on Mac OS X and Linux machines, however for Windows you may have to install it from <a href="https://www.python.org/downloads/windows/">Python website</a>. For Windows you also drop the "sudo" command.</small>
+<small>Prerequisite is that you have Python 2.x (and pip) installed on your computer. This is typically already available on Mac OS X and Linux machines, however for Windows you may have to install it from <a href="https://www.python.org/downloads/windows/">Python website</a>. For Windows you should also drop the "sudo" command as it's not needed, simply install it command <i>pip install gl</i></small>
 
 ## Basics ##
 
