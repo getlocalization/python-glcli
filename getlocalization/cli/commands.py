@@ -65,6 +65,41 @@ def map_locale(masterFile, languageCode, targetFile, **kwargs):
     print "Mapped translation of %s for %s to be saved as %s" % (masterFile, languageCode, targetFile)
 
 @d.command(shortlist=True)
+def map_master(oldFile, newFile, **kwargs):
+    '''Map existing master file on server to new a location on your local repository. This also changes the filename on server-side to match your local directory structure.'''
+    
+    repo = Repository()
+
+    username = kwargs.get('username')
+    password = kwargs.get('password')
+  
+    if username == '' or password == '':
+        username, password = prompt_userpw()
+
+
+    mf = GLMasterFile(GLProject(repo.get_project_name(), username, password), repo.relative_to_root(oldFile), repo.relative_path(repo.file_path(oldFile)), None)
+
+    if not mf.isAvailableRemotely():
+        print "Error: File " + oldFile + " is not available on the server."
+        return
+
+    try:
+        if repo.rename_master_file(oldFile, newFile):
+            mf.rename(newFile, repo.relative_path(repo.file_path(newFile)))
+            repo.commit() # Commit the rename to local repo after successful request to server
+
+            translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
+            trlist = translations.list()
+            repo.save_status(trlist)
+
+            print "Successfully mapped master %s => %s" % (oldFile, newFile)
+        else:
+            print "Error when mapping master file."
+    except EnvironmentError as err:
+        print err
+
+
+@d.command(shortlist=True)
 def translations(output=('o', 'human', "Output format e.g. json"), **kwargs):
     '''List translations from current project'''
     repo = Repository();

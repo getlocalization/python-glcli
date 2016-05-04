@@ -8,6 +8,7 @@ import sys
 
 import json as simplejson
 
+
 class Repository(object):
     def __init__(self):
         self.config = ConfigParser.ConfigParser()
@@ -122,15 +123,49 @@ class Repository(object):
         self.commit()
  
     def add_locale_map(self, master_file, languageCode, localFile):
+        self.config.get("master_files", self.relative_path(self.file_path(master_file)))
+
         self.config.set("locale_map", self.relative_path(self.file_path(master_file)) + "/" + languageCode, self.relative_path(localFile))
         self.commit()
     
+    def rename_master_file(self, old_local_file, new_local_file):
+        if not os.path.exists(self.file_path(new_local_file)):
+            raise EnvironmentError("Error: Unable to find the new file ('"+new_local_file+"') from the local file system. It needs to exists in order to map it.")
+
+        try:
+            existing_hash = self.config.get("master_files", self.relative_path(self.file_path(old_local_file)))
+        except ConfigParser.NoOptionError:
+            raise EnvironmentError("Error: Unable to find the old file ('"+old_local_file+"') from the local repository.")
+
+        if existing_hash:
+            self.config.set("master_files", self.relative_path(self.file_path(new_local_file)), existing_hash)
+            
+            successful = self.config.remove_option("master_files", self.relative_path(self.file_path(old_local_file)))
+            
+            if successful:
+                # Also delete the translation mappings as they are not relevant anymore. 
+                trlist = self.get_status()
+
+                if trlist is not None:                
+                    for tr in trlist:
+                        local_file = self.delete_mapped_locale(tr.get('master_file'), tr.get('iana_code'))
+
+                return True
+
+        return False
+
     def get_mapped_locale(self, master_file, languageCode):
         try:
             return self.config.get("locale_map", master_file + "/" + languageCode)
         except ConfigParser.NoOptionError:
             return None
-    
+
+    def delete_mapped_locale(self, master_file, languageCode):
+        try:
+            self.config.remove_option("locale_map", master_file + "/" + languageCode)
+        except ConfigParser.NoOptionError:
+            pass
+            
     def parse_locale(self, locale_file):
         idx = locale_file.rfind('/')
         
@@ -155,11 +190,6 @@ class Repository(object):
             
             if hash != item[1]:
                 files.append(item[0])
-                
-            #mtime = os.path.getmtime(self.relative_to_root(item[0]))
-            
-            #if float(mtime) > float(item[1]):
-            #    files.append(item[0])
         
         return files
     

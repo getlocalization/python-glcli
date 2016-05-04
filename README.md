@@ -66,6 +66,17 @@ Mapped translation of master/English.properties for fi to be saved as locale/Fin
 
 When you run gl pull, the file that contains Finnish translations (IANA code: fi) of master/English.properties file is saved to locale/Finnish.properties file.
 
+## Mapping existing master files with local files ##
+
+Note: if the file does not reside in the server-side and is only on your local machine, simply use gl add instead of this.
+
+If you have an existing master file in the server-side and you wish to map it with a local file, you can do it with map-master command. This will also rename the file in server-side according to your local file system. Typical use case for this is if you have for example changed the location of your master files in your local file system. Location in this context means relative location to the gl repository root (i.e. the directory where .gl folder resides). *Note* that all the translation mappings will be lost so they need to be remapped with map-locale command. 
+
+<pre>
+gl map-master [master-filename-in-server] [filename-in-local-filesystem]
+</pre>
+
+
 ## Push ##
 
 <pre>

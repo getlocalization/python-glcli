@@ -30,12 +30,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 class QueryException(Exception):
     """ generated source for class QueryException """
     def __init__(self, message, statusCode):
-        """ generated source for method __init__ """
-        super(QueryException, self).__init__(message)
-        self.statusCode = statusCode
+      """ generated source for method __init__ """
+      super(QueryException, self).__init__(message)
+      self.statusCode = statusCode
+      self.message = message
 
     def getStatusCode(self):
-        """ generated source for method getStatusCode """
-        return self.statusCode
+      """ generated source for method getStatusCode """
+      return self.statusCode
 
+    def getMessage(self):
+      return self.message
    

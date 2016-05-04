@@ -32,6 +32,8 @@ from getlocalization.api.data.ListMasterFilesQuery import ListMasterFilesQuery
 from getlocalization.api.data.CreateMasterFileQuery import CreateMasterFileQuery
 from getlocalization.api.data.UpdateMasterFileQuery import UpdateMasterFileQuery
 from getlocalization.api.data.RemoveMasterFileQuery import RemoveMasterFileQuery
+from getlocalization.api.data.RenameMasterFileQuery import RenameMasterFileQuery
+
 
 from getlocalization.api.client.QueryException import QueryException
 from getlocalization.api.client.QuerySecurityException import QuerySecurityException
@@ -73,7 +75,7 @@ class GLMasterFile(object):
             query.doQuery()
             
             master_files = query.getMasterFiles()
-            
+
             self.createdToServer = self.name in master_files
             
             return self.createdToServer
@@ -128,6 +130,21 @@ class GLMasterFile(object):
                 raise GLException("Username or password incorrect or you might not have required acl to this project.")
             else:
                 raise GLException("Unable to remove master file from your project: " + str(e))
+
+    def rename(self, newRealpath, newPathname):
+        query = RenameMasterFileQuery(self.myProject.getProjectName(), self.getName(), newPathname)
+        query.setBasicAuth(self.myProject.getUsername(), self.myProject.getPassword())
+
+        try:
+            query.doQuery()
+
+            self.name = newPathname
+            self.realpath = newRealpath
+        except QueryException as e:
+            if e.statusCode == 401:
+                raise GLException("Username or password incorrect or you might not have required acl to this project.")
+            else:
+                raise GLException("Unable to rename the master file in your project: " + str(e))
 
     def getName(self):
         return self.name
