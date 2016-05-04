@@ -19,11 +19,12 @@ commands:
  add           Add a new master file to project. It will be tracked and pushed when there are changes.
  init          Create a local repository in the working directory and link it to an existing Get Localization project.
  map-locale    Map translation of given master file to a local file. When the file is pulled from server, it's saved in the given target file.
+ map-master    Map existing master file on server to new a location on your local repository. This also changes the filename on server-side to match your local directory structure.
  pull          Pull available translations from server
  push          Push changed master files to server
  push-tr       Push local mapped translations that don't exist on server
  remote        Return remote project name
- remove        Remove master file from project.
+ remove        Remove master file from a remote project. This will remove the master file (and related translations). Local file is not removed.
  status        Project status
  translations  List translations from current project
 </pre>
@@ -70,7 +71,9 @@ When you run gl pull, the file that contains Finnish translations (IANA code: fi
 
 Note: if the file does not reside in the server-side and is only on your local machine, simply use gl add instead of this.
 
-If you have an existing master file in the server-side and you wish to map it with a local file, you can do it with map-master command. This will also rename the file in server-side according to your local file system. Typical use case for this is if you have for example changed the location of your master files in your local file system. Location in this context means relative location to the gl repository root (i.e. the directory where .gl folder resides). *Note* that all the translation mappings will be lost so they need to be remapped with map-locale command. 
+If you have an existing master file on the server-side and you wish to map it with a local file, you can do it with map-master command. This will also rename the file on server-side according to your local file system. Typical use case for this is if you have for example changed the location of your master files on your local file system. Location in this context means relative location to the gl repository root (i.e. the directory where .gl folder resides). 
+
+*Note* that all the translation mappings will be lost so they need to be remapped with map-locale command. 
 
 <pre>
 gl map-master [master-filename-in-server] [filename-in-local-filesystem]
