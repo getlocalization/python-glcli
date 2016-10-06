@@ -223,7 +223,7 @@ def push(**kwargs):
     sys.exit(0)
 
 @d.command(shortlist=True)
-def push_tr(**kwargs):
+def push_tr(force=('f', False, 'also push files existing on server'), **kwargs):
     '''Push local mapped translations that don't exist on server'''
     repo = Repository();
     username = kwargs.get('username')
@@ -232,9 +232,9 @@ def push_tr(**kwargs):
     if username == '' or password == '':
         username, password = prompt_userpw()
         
-    push_translations(repo, username, password)
+    push_translations(repo, username, password, force)
 
-def push_translations(repo, username, password):
+def push_translations(repo, username, password, force):
     # Push translations that don't exist
     translations = GLTranslations(GLProject(repo.get_project_name(), username, password))
     
@@ -253,7 +253,7 @@ def push_translations(repo, username, password):
             if tr.get('master_file') == tr_file[0] and tr.get('iana_code') == tr_file[1]:
                 found = True
         
-        if not found:
+        if force or not found:
             try:
                 translations.update_translation_file(local_file, tr_file[0], tr_file[1])
             except:
