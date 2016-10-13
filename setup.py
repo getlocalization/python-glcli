@@ -7,7 +7,7 @@ import sys
 
 setup(name='gl',
       #setup_requires=["py2app"],
-      version='0.2.36',
+      version='0.2.37',
       description='Get Localization Command-Line Interface',
       author='Get Localization',
       author_email='support@getlocalization.com',

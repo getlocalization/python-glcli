@@ -89,7 +89,7 @@ class Query(object):
             handle = urllib2.urlopen(request)
             data = handle.read()
             
-            if handle.getcode() != 200:
+            if handle.getcode() not in (200, 201):
                 raise QueryException(data, handle.getcode())
             
             return handle.getcode()
